@@ -19,7 +19,7 @@ function App() {
 
     'name': '',
     'course': '',
-    'status': 'inactive'
+    'status': 'active'
   };
 
   //student
@@ -27,6 +27,9 @@ function App() {
 
   //students list
   const [studentsList, setStudentsList] = useState(students);
+
+  //filter name
+  const [filterName, setFilterName] = useState('');
 
   useEffect(() => {
 
@@ -52,9 +55,42 @@ function App() {
     .catch(err => console.log(err));
   }, [])
 
+  useEffect(() => {
+
+    let filteredName = studentsList;
+    
+    if (filterName !== '') {
+
+        filteredName = studentsList.filter(elem => elem.name.toLowerCase().match(filterName.toLowerCase()));
+    }
+    
+    setStudentsList(filteredName);
+  }, [filterName]);
+
+  function sendForm(e) {
+
+    e.preventDefault();
+
+    students.push(student);
+
+    //reset form
+    setStudent(resetStudent);
+  }
+
+  function handleChangeInput(e) {
+
+    const newStudent = {
+
+      ...student,
+      [e.target.name]: e.target.value
+    }
+
+    setStudent(newStudent);
+  }
+
   console.log(courseRand());
   console.log(statusRand());
-
+  console.log(students);
 
   return (
     <>
@@ -65,29 +101,29 @@ function App() {
         
         <section className="form-section">
           <h2>Aggiungi Studente</h2>
-          {/* <form id="student-form">
+          <form id="student-form" onSubmit={sendForm}>
             <label>
               Nome:
-              <input type="text" name="name" value={student.name} required />
+              <input type="text" name="name" onChange={handleChangeInput} value={student.name} required />
             </label>
             <label>
               Corso:
-              <input type="text" name="course" value={student.course} required />
+              <input type="text" name="course" onChange={handleChangeInput}  value={student.course} required />
             </label>
             <label>
               Stato:
-              <select name="status" value={student.status} required>
+              <select name="status" onChange={handleChangeInput} value={student.status} required>
                 <option value="active">Attivo</option>
                 <option value="inactive">Inattivo</option>
               </select>
             </label>
             <button type="submit">Aggiungi</button>
-          </form> */}
+          </form>
         </section>
 
         <section className="filter-section">
           <h2>Filtra</h2>
-          <input type="text" id="filter-name" placeholder="Filtra per nome" />
+          <input type="text" id="filter-name" placeholder="Filtra per nome" onChange={e => setFilterName(e.target.value)} />
           <input type="text" id="filter-course" placeholder="Filtra per corso" />
         </section>
 
@@ -115,14 +151,14 @@ function App() {
                   <button className="edit-btn">Modifica</button>
                   <button className="delete-btn">Elimina</button>
                 </div>
-                <form className="edit-form">
+                {/* <form className="edit-form">
                   <label>
                     Nome:
-                    <input type="text" name="name" value="Giulia" />
+                    <input type="text" name="name" value={elem.name} />
                   </label>
                   <label>
                     Corso:
-                    <input type="text" name="course" value="Matematica" />
+                    <input type="text" name="course" value={elem.course} />
                   </label>
                   <label>
                     Stato:
@@ -132,13 +168,10 @@ function App() {
                     </select>
                   </label>
                   <button type="submit">Salva modifiche</button>
-                </form>
+                </form> */}
               </li>
             )}
-
-            
-
-          </ul>
+          </ul> 
         </section>
       </main>
     </>

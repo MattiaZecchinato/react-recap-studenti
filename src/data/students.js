@@ -8,11 +8,6 @@ const students = [
         'name': 'Franco',
         'course': 'Fisica',
         'status': 'inactive'
-    },
-    {
-        'name': 'Giada',
-        'course': 'Italiano',
-        'status': 'active'
     }
 ];
 
