@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react'
 
+//axios
+import axios from 'axios';
+
 //students
 import students from './data/students';
 
+// rand course
+import courseRand from './utils/courseRand';
+// rand status
+import statusRand from './utils/statusRand';
+
 function App() {
+
+  const uri = 'https://jsonplaceholder.typicode.com/users';
 
   const resetStudent = {
 
@@ -23,17 +33,39 @@ function App() {
     setStudentsList(students);
   }, []);
 
+  useEffect(() => {
+
+    axios.get(uri)
+    .then(res => {
+      
+      const studentsFromApi = res.data.map((elem) => ({
+        id: elem.id,
+        name: elem.name,
+        course: courseRand(),
+        status: statusRand()
+      }));
+      setStudentsList(prev => [...prev, ...studentsFromApi]);
+
+      console.log('console from api');
+      console.log(studentsFromApi);
+    })
+    .catch(err => console.log(err));
+  }, [])
+
+  console.log(courseRand());
+  console.log(statusRand());
+
 
   return (
     <>
-      <main class="container">
+      <main className="container">
         <h1>Gestione Studenti</h1>
 
-        <div id="status-message" class="status-message"></div>
+        <div id="status-message" className="status-message"></div>
         
-        <section class="form-section">
+        <section className="form-section">
           <h2>Aggiungi Studente</h2>
-          <form id="student-form">
+          {/* <form id="student-form">
             <label>
               Nome:
               <input type="text" name="name" value={student.name} required />
@@ -50,19 +82,19 @@ function App() {
               </select>
             </label>
             <button type="submit">Aggiungi</button>
-          </form>
+          </form> */}
         </section>
 
-        <section class="filter-section">
+        <section className="filter-section">
           <h2>Filtra</h2>
           <input type="text" id="filter-name" placeholder="Filtra per nome" />
           <input type="text" id="filter-course" placeholder="Filtra per corso" />
         </section>
 
-        <section class="list-section">
-          <div class="list-header">
+        <section className="list-section">
+          <div className="list-header">
             <h2>Elenco Studenti</h2>
-            <div class="sort-controls">
+            <div className="sort-controls">
               <label>Ordina per:</label>
               <select id="sort-by">
                 <option value="name">Nome</option>
@@ -72,18 +104,18 @@ function App() {
           </div>
           <ul id="student-list">
 
-            {studentsList.map(elem =>
+            {studentsList.map((elem, i) =>
 
-              <li>
+              <li key={i}>
                 <div>
                   <strong>{elem.name}</strong> - {elem.course}
-                  <span class="status">({elem.status})</span>
+                  <span className="status">({elem.status})</span>
                 </div>
-                <div class="actions">
-                  <button class="edit-btn">Modifica</button>
-                  <button class="delete-btn">Elimina</button>
+                <div className="actions">
+                  <button className="edit-btn">Modifica</button>
+                  <button className="delete-btn">Elimina</button>
                 </div>
-                <form class="edit-form">
+                <form className="edit-form">
                   <label>
                     Nome:
                     <input type="text" name="name" value="Giulia" />

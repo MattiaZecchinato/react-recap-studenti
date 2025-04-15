@@ -1,17 +1,17 @@
 const students = [
     {
-        'name': 'gianni',
-        'course': 'matematica',
+        'name': 'Gianni',
+        'course': 'Matematica',
         'status': 'active'
     },
     {
-        'name': 'franco',
-        'course': 'fisica',
+        'name': 'Franco',
+        'course': 'Fisica',
         'status': 'inactive'
     },
     {
-        'name': 'giada',
-        'course': 'italiano',
+        'name': 'Giada',
+        'course': 'Italiano',
         'status': 'active'
     }
 ];
